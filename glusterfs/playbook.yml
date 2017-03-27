@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+  - name: Install epel-release
+    yum: name=epel-release state=present
+
+  - name: Install requared sortware
+    yum: name={{ item }} state=present
+    with_items:
+      - htop
+      - git
+      - lsof
+      - bash-completion*
+      - docker
+      - vim 
+      - python-pip
+      - centos-release-gluster310
+ 
+  - name: Install gluster
+    yum: name={{ item }} state=present
+    with_items:
+      - glusterfs-server 
+  
+
+
+

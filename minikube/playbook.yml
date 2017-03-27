@@ -1,0 +1,49 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+  - name: Install epel-release
+    yum: name=epel-release state=present
+
+  - name: Install requared sortware
+    yum: name={{ item }} state=present
+    with_items:
+      - htop
+      - git
+      - lsof
+      - bash-completion*
+      - docker
+      - vim 
+      - python-pip 
+  
+  - name: Install docker-compose
+    pip: name=docker-compose
+ 
+  - name: Add docker group
+    group:
+      name: docker
+      state: present 
+
+  - name: Add vagrant to the docker's group
+    user: name=vagrant groups=vagrant,docker
+
+  - name: Start docker service
+    service: name=docker state=started enabled=yes
+
+  - name: Create database folder
+    file:
+      path: /db
+      state: directory
+      mode: 0700
+      owner: root
+ 
+  - name: Create www folder
+    file:
+      path: /www
+      state: directory
+      mode: 0700
+      owner: root
+
+
+
