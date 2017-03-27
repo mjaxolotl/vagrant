@@ -19,10 +19,14 @@
       - centos-release-gluster310
  
   - name: Install gluster
-    yum: name={{ item }} state=present
-    with_items:
-      - glusterfs-server 
-  
-
-
-
+    yum: name=glusterfs-server state=present
+  - name: Create
+    parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_end: 4gib
+#  - name: Create filesystem on /dev/sdb
+#    filesystem:
+#      fstype: xfs
+#      dev: /dev/sdb1
