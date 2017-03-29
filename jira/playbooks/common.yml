@@ -1,0 +1,23 @@
+---
+#- hosts: all
+#  become: yes 
+  
+#  tasks: 
+
+  - name: Install epel-release
+    yum: name=epel-release state=present
+
+  - name: Install requared sortware
+    yum: name={{ item }} state=present
+    register: result
+    with_items:
+      - htop
+      - git
+      - lsof
+      - bash-completion*
+      - vim 
+      - ntp
+
+  - name: Start and enable ntpd
+    service: name=ntpd state=started enabled=yes
+

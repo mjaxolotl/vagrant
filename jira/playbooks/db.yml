@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+   - include: common.yml
+   
+   - name: Add PostgreSQL 9.3 repo
+     yum:
+       name: https://download.postgresql.org/pub/repos/yum/9.3/redhat/rhel-7-x86_64/pgdg-centos93-9.3-3.noarch.rpm
+       state: present
+
+   - name: Install PostgreSQl
+     yum: name={{ item }} state=present
+     with_items:
+     - postgresql93.x86_64
+     - postgresql93-contrib.x86_64
+     - postgresql93-devel.x86_64
+     - postgresql93-server.x86_64
+
+
+   - name: Initialize Postgres
+     command: /usr/pgsql-9.3/bin/postgresql93-setup initdb
+     environment:
+       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

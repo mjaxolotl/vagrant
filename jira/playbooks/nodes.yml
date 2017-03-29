@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+  - include: common.yml
+  
+#  - name: Download java 8 
+#    get_url:
+#      url: https://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.rpm
+#      validate_certs: no
+#      headers: "Cookie : oraclelicense=accept-securebackup-cookie"
+     # dest: /tmp/
+
+  - name: Upload java 8 rpm
+    copy:
+       src: ../rpm/jdk-8u112-linux-x64.rpm
+       dest: /tmp/jdk-8u112-linux-x64.rpm
+       force: no
+
+  - name: Install java 8
+    yum: 
+      name: /tmp/jdk-8u112-linux-x64.rpm
+      state: present

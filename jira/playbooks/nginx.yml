@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+  - include: common.yml
