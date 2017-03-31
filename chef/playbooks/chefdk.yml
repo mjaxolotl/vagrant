@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: yes
+  
+  tasks:
+  
+  - include: common.yml
+
+  - name: Copy rpm to server
+    copy:
+       src: ../rpm/chefdk-1.2.22-1.el7.x86_64.rpm
+       dest: /tmp/chefdk-1.2.22-1.el7.x86_64.rpm
+       force: no
+
+

@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+  
+  tasks:
+  
+  - include: common.yml
+
+  - name: Copy rpm to server
+    copy:
+       src: ../rpm/chef-server-core-12.14.0-1.el7.x86_64.rpm
+       dest: /tmp/chef-server-core-12.14.0-1.el7.x86_64.rpm
+       force: no
+
+  - name: Install chefserver
+    yum:
+       name: /tmp/chef-server-core-12.14.0-1.el7.x86_64.rpm
+       state: present

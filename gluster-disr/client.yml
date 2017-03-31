@@ -1,8 +1,7 @@
 ---
-#- hosts: all
-#  become: yes 
-  
-#  tasks: 
+- hosts: all
+  become: yes 
+  tasks: 
 
   - name: Install epel-release
     yum: name=epel-release state=present
@@ -15,15 +14,22 @@
       - git
       - lsof
       - bash-completion*
+      - docker
       - vim 
+      - python-pip
+      - centos-release-gluster310
+      - parted
       - ntp
+
+  - name: Install gluster-client
+    yum: name=glusterfs-client state=present
 
   - name: Start and enable ntpd
     service: name=ntpd state=started enabled=yes
 
   - name: Copy hosts file to servers
     template:
-      src: ../templates/hosts.j2
+      src: templates/hosts.j2
       dest: /etc/hosts
       owner: root
       mode: 0644

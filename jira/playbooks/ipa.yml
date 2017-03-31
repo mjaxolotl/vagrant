@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes 
+  tasks: 
+
+  - include: common.yml
+  
+  - name: Instatll free-ipa
+    yum: name=freeipa-server state=present
+
+  

@@ -14,54 +14,55 @@ Vagrant.configure("2") do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "centos/7"
   
-
-  config.vm.define "db" do |db|
-    db.vm.hostname = "db.mjmax.ppp"
-    db.vm.network "private_network", ip: "10.10.10.30"
-    db.vm.provision "ansible" do |ansible|
-      ansible.playbook = "playbooks/db.yml"
-    end
-  end
+  disk1 = "~/VirtualBox\ VMs/gluster_disk1.vdi"
+  disk2 = "~/VirtualBox\ VMs/gluster_disk2.vdi"
+  disk3 = "~/VirtualBox\ VMs/gluster_disk3.vdi"
 
   config.vm.define "node1" do |node1|
     node1.vm.hostname = "node1.mjmax.ppp"
     node1.vm.network "private_network", ip: "10.10.10.10"
+    node1.persistent_storage.diskdevice = '/dev/sdc'
+    node1.persistent_storage.enabled = true
+    node1.persistent_storage.location = disk1
+    node1.persistent_storage.size = 5000
     node1.vm.provision "ansible" do |ansible|
-       ansible.playbook = "playbooks/nodes.yml"
-    end
-    node1.vm.provider "virtualbox" do |vb|
-      vb.memory = "2084"
+      ansible.playbook = "playbook.yml"
     end
   end
 
   config.vm.define "node2" do |node2|
     node2.vm.hostname = "node2.mjmax.ppp"
     node2.vm.network "private_network", ip: "10.10.10.20"
+    node2.persistent_storage.diskdevice = '/dev/sdc'
+    node2.persistent_storage.enabled = true
+    node2.persistent_storage.location = disk2
+    node2.persistent_storage.size = 5000
     node2.vm.provision "ansible" do |ansible|
-      ansible.playbook = "playbooks/nodes.yml"
-    end
-    node1.vm.provider "virtualbox" do |vb|
-      vb.memory = "2084"
+      ansible.playbook = "playbook.yml"
     end
   end
 
-  config.vm.define "nginx" do |nginx|
-    nginx.vm.hostname = "nginx.mjmax.ppp"
-    nginx.vm.network "private_network", ip: "10.10.10.40"
-    nginx.vm.provision "ansible" do |ansible|
-      ansible.playbook = "playbooks/nginx.yml"
+  config.vm.define "node3" do |node3|
+    node3.vm.hostname = "node3.mjmax.ppp"
+    node3.vm.network "private_network", ip: "10.10.10.30"
+    node3.persistent_storage.diskdevice = '/dev/sdc'
+    node3.persistent_storage.enabled = true
+    node3.persistent_storage.location = disk3
+    node3.persistent_storage.size = 5000
+    node3.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+    end
+  end
+  
+  config.vm.define "client" do |client|
+    client.vm.hostname = "client.mjmax.ppp"
+    client.vm.network "private_network", ip: "10.10.10.40"
+    client.vm.provision "ansible" do |ansible|
+      ansible.playbook = "client.yml"
     end
   end
 
-
-  config.vm.define "ipa" do |ipa|
-    ipa.vm.hostname = "ipa.mjmax.ppp"
-    ipa.vm.network "private_network", ip: "10.10.10.50"
-    ipa.vm.provision "ansible" do |ansible|
-      ansible.playbook = "playbooks/ipa.yml"
-    end
-  end
-
+  
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

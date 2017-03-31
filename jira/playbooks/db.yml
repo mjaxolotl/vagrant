@@ -18,8 +18,27 @@
      - postgresql93-devel.x86_64
      - postgresql93-server.x86_64
 
+   - name: Check existing cluster
+     stat:
+       path: /var/lib/pgsql/9.3/initdb.log
+     register: initdb
 
    - name: Initialize Postgres
      command: /usr/pgsql-9.3/bin/postgresql93-setup initdb
      environment:
        PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+     when: initdb.stat.islnk is not defined
+
+   - name: Start and enable postgres
+     service: name=postgresql-9.3 state=started enabled=yes
+   
+#   - name: Create db jira
+#     postgresql_db:
+#       name: jira
+#       encoding: UTF-8
+#
+#   - name: create postgres user 
+#     postgresql_user:
+#       db: jira
+#       name: jira
+#       password: jira

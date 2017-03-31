@@ -19,6 +19,10 @@
       - python-pip
       - centos-release-gluster310
       - parted
+      - ntp
+
+  - name: Start and enable ntpd
+    service: name=ntpd state=started enabled=yes
 
   - name: Copy hosts file to servers
     template:
@@ -30,19 +34,11 @@
   - name: Install gluster
     yum: name=glusterfs-server state=present
  
-#  - name: Create
-#    when: result|succeeded
-#    parted:
-#        device: /dev/sdb
-#        number: 1
-#        state: present
-#        part_end: 3gib
-    
   - name: Create filesystem on /dev/sdb
     filesystem:
       fstype: xfs
-      dev: /dev/sdb1
-
+      dev: /dev/sdb
+   
   - name: Create a share folder
     file: 
       path: /share
@@ -52,7 +48,7 @@
   - name:  Add the share to fstab
     mount:
       name: /share
-      src: /dev/sdb1
+      src: /dev/sdb
       fstype: xfs
       state: mounted
 

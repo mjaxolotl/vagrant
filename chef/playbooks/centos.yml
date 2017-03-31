@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  
+  tasks:
+  
+  - name: Copy rpm to server
+    copy:
+       src: ../rpm/chef-12.19.36-1.el7.x86_64.rpm
+       dest: /tmp/chef-12.19.36-1.el7.x86_64.rpm
+       force: no
+
+  - name: Install chef client
+    yum:
+       name: /tmp/chef-12.19.36-1.el7.x86_64.rpm
+       state: present
+
+
+

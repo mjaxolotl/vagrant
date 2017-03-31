@@ -22,3 +22,9 @@
     yum: 
       name: /tmp/jdk-8u112-linux-x64.rpm
       state: present
+
+  - name: Upload jira
+    copy:
+       src: ../rpm/atlassian-jira-software-7.3.3-x64.bin
+       dest: /tmp/atlassian-jira-software-7.3.3-x64.bin
+       force: no
