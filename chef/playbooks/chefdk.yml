@@ -1,15 +1,17 @@
 ---
 - hosts: all
   become: yes
-  
+
   tasks:
-  
+
   - include: common.yml
 
-  - name: Copy rpm to server
-    copy:
-       src: ../rpm/chefdk-1.2.22-1.el7.x86_64.rpm
-       dest: /tmp/chefdk-1.2.22-1.el7.x86_64.rpm
-       force: no
+  - name: Download chefdk
+    get_url:
+      url: https://packages.chef.io/files/stable/chefdk/2.0.28/el/7/chefdk-2.0.28-1.el7.x86_64.rpm
+      dest: /tmp/chef-dk.rpm
 
-
+  - name: Install chefdk
+    yum:
+       name: /tmp/chef-dk.rpm
+       state: present

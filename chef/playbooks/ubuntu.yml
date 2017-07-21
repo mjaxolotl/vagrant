@@ -1,17 +1,16 @@
 ---
 - hosts: all
   become: yes
-  
+
   tasks:
-  
-  - name: Copy rpm to server
-    copy:
-      src: ../rpm/chef_12.19.36-1_amd64.deb
-      dest: /tmp/chef_12.19.36-1_amd64.deb
-      force: no
 
-  - name: Install chef client
-    apt:
-      deb: /tmp/chef_12.19.36-1_amd64.deb
-      state: present
-
+  # - name: Copy rpm to server
+  #   copy:
+  #     src: ../rpm/chef_12.19.36-1_amd64.deb
+  #     dest: /tmp/chef_12.19.36-1_amd64.deb
+  #     force: no
+  #
+  # - name: Install chef client
+  #   apt:
+  #     deb: /tmp/chef_12.19.36-1_amd64.deb
+  #     state: present

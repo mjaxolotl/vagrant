@@ -2,7 +2,7 @@
   - name: Install epel-release
     yum: name=epel-release state=present
 
-  - name: Install requared sortware
+  - name: Install required packages
     yum: name={{ item }} state=present
     register: result
     with_items:
@@ -10,7 +10,7 @@
       - git
       - lsof
       - bash-completion*
-      - vim 
+      - vim
       - ntp
       - mc
       - nmap
@@ -25,4 +25,3 @@
       dest: /etc/hosts
       owner: root
       mode: 0644
-
