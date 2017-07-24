@@ -1,0 +1,49 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    user_password: $6$Pez.U61TmqfvkNkv$aeHyoA.cENvfpFsy76nEjUJc.eYs192ZoK8e.o4ZwFR3CmhmTUW3T9a2XtnfR6lvB5LBAG8cf6YKVIwNzB0fH1
+  tasks:
+
+  - name: Install Epel release
+    yum:
+      name: epel-release
+      state: present
+
+  - name: Install required packages
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - htop
+      - vim
+      - lsof
+      - bash-completion
+
+  - name: Add daemon.json docker
+    template:
+      src: templates/daemon.json.j2
+      dest: /etc/docker/daemon.json
+
+  - name: Install docker
+    yum:
+      name: docker
+      state: present
+
+  - name: Start docker server
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Create the docker group
+    group:
+      name: docker
+      state: present
+
+  - name: Create the project user
+    user:
+      name: devops
+      state: present
+      groups: docker, wheel
+      password: "{{ user_password }}"
