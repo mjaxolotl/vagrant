@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - include: common.yml
+
+  - name: Install puppetserver
+    yum:
+      name: puppetserver
+      state: latest
+
+  - name: Tune memory consumption
+    template:
+      src: ../templates/puppetserver.j2
+      dest: /etc/sysconfig/puppetserver
+
+  - name: Start puppetserver
+    service:
+      name: puppetserver
+      state: started
+      enabled: yes

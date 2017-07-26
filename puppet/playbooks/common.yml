@@ -1,0 +1,37 @@
+---
+  - name: Install epel-release
+    yum: name=epel-release state=present
+
+  - name: Install required packages
+    yum: name={{ item }} state=present
+    register: result
+    with_items:
+      - htop
+      - git
+      - lsof
+      - bash-completion*
+      - vim
+      - ntp
+      - mc
+      - nmap
+      - tcpdump
+
+  - name: Start and enable ntpd
+    service: name=ntpd state=started enabled=yes
+
+  - name: Copy hosts file to servers
+    template:
+      src: ../templates/hosts.j2
+      dest: /etc/hosts
+      owner: root
+      mode: 0644
+
+  - name: Download puppet repo
+    get_url:
+      url:  https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
+      dest: /tmp/puppet5-release-el-7.noarch.rpm
+
+  - name: Install puppet repo
+    yum:
+      name: /tmp/puppet5-release-el-7.noarch.rpm
+      state: present

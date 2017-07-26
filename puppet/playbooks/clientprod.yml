@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+
+  - include: common.yml
+
+  - name: Install puppetagent
+    yum:
+      name: puppet-agent
+      state: latest
+
+  # - name: Start puppetagent
+  #   service:
+  #     name: puppet-agent
+  #     state: started
+  #     enabled: yes
